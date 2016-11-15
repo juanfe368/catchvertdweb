@@ -24,18 +24,17 @@ class ClassUsuario {
     private $conexionDb;
 
 
-    public function ClassUsuario($pNameUser,$pPassUser,$pTipoRol,$pEstadoUsuario,$pEmpresaFunci){
-        include_once './ConexionDb.php';
+    public function ClassUsuario($ruta,$pNameUser,$pPassUser,$pTipoRol,$pEstadoUsuario,$pEmpresaFunci){
+        include_once $ruta.'ConexionDb.php';
         $this->conexionDb = new ConexionDb();
-        $this->idtblUsers = $pNameUser;
+        $this->txtNameUser = $pNameUser;
         $this->txtPassUser = $pPassUser;
         $this->idTblRol = $pTipoRol;
         $this->idTblEstadoUsers = $pEstadoUsuario;
         $this->idTblEmpresaFunci = $pEmpresaFunci;
     }
     
-    public function insertUsuarios($objUsuario){
-        $linkConexion = $this->conexionDb->getConnectionMysql();
+    public function insertUsuarios($objUsuario,$linkConexion){
         $sqlinsertUsuarios = "INSERT INTO ".self::TABLENAMEUSER.
                               "(".self::COLNOMBREUSUARIO.",".
                                   self::COLPASSWORD.",".

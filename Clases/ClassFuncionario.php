@@ -27,9 +27,9 @@ class ClassFuncionario {
     private $txtCelularFuncionario;
     private $conexionDb;
 
-    public function ClassFuncionario($pNombreFuncionario,$pApellidoFuncionario,
+    public function ClassFuncionario($ruta,$pNombreFuncionario,$pApellidoFuncionario,
                                      $pCorreoFuncionario,$pCelularFuncionario) {
-        include_once './ConexionDb.php';
+        include_once $ruta.'ConexionDb.php';
         $this->conexionDb = new ConexionDb();
         $this->txtNombreFuncionario = $pNombreFuncionario;
         $this->txtApellidoFuncionario = $pApellidoFuncionario;
@@ -37,8 +37,7 @@ class ClassFuncionario {
         $this->txtCelularFuncionario = $pCelularFuncionario;
     }
     
-    public function insertFuncionario($objFuncionario) {
-        $linkConexion = $this->conexionDb->getConnectionMysql();
+    public function insertFuncionario($objFuncionario,$linkConexion) {
         $sqlInsertFuncionario = "INSERT INTO ".self::NAMETABLEFUNCIONARIO.
                                     "(".self::COLNOMBREFUNCIONARIO.",".
                                         self::COLAPELLIDOFUNCIONARIO.",".
@@ -47,8 +46,8 @@ class ClassFuncionario {
                                 VALUES
                                     ('".$objFuncionario->getTxtNombreFuncionario()."',".
                                        "'".$objFuncionario->getTxtApellidoFuncionario()."',".
-                                    "'".$objFuncionario->getTxtCorreoFuncionario().",".
-                                    "'".$objFuncionario->getTxtCelularFuncionario().");";
+                                    "'".$objFuncionario->getTxtCorreoFuncionario()."',".
+                                    "'".$objFuncionario->getTxtCelularFuncionario()."');";
         $respuestFuncionario = $this->conexionDb->executeQuery($sqlInsertFuncionario, $linkConexion);
         //$this->conexionDb->closeConexionMysql($linkConexion);
         return $respuestFuncionario;

@@ -20,6 +20,7 @@ class ConexionDb {
     
     public function getConnectionMysql() {
         $conexion = mysql_connect(self::NAMESERVER, self::USERDB, self::PASSWORDDB);
+        mysql_select_db(self::NAMEDB);
         if(!$conexion){
             echo 'Problemas conectandose a la base de datos';
             exit();
@@ -30,7 +31,7 @@ class ConexionDb {
     }
     
     public function executeQuery($stringSql,$conexionSql) {
-        $respuest = mysql_query($stringSql);
+        $respuest = mysql_query($stringSql,$conexionSql);
         return $respuest;
     }
     

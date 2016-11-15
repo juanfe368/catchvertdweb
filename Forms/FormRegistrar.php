@@ -3,7 +3,9 @@
     if($_POST['hiAction']==1){
         include_once '../Clases/ConexionDb.php';
         include_once '../Clases/ClassFuncionario.php';
-        $funcionario = new ClassFuncionario($_POST['inputNombre'], 
+        $ruta = "../Clases/";
+        $funcionario = new ClassFuncionario($ruta,
+                                            $_POST['inputNombre'], 
                                             $_POST['inputApellido'], 
                                             $_POST['inputEmail'], 
                                             $_POST['inputCelular']);
@@ -11,15 +13,16 @@
         $linkConexion = $conexionDb->getConnectionMysql();
         mysql_query('START TRANSACTION');
         mysql_query('SET AUTOCOMMIT = 0');
-        $respuestInserFuncionario = $funcionario->insertFuncionario($funcionario);
+        $respuestInserFuncionario = $funcionario->insertFuncionario($funcionario,$linkConexion);
         $idFuncionario = mysql_insert_id();
         include_once '../Clases/ClassUsuario.php';
-        $usuario = new ClassUsuario($_POST['inputEmail'], 
+        $usuario = new ClassUsuario($ruta,
+                                    $_POST['inputEmail'], 
                                     $_POST['inputCelular'], 
                                     $_POST['inputTipoUsuario'], 
                                     1, 
                                     $idFuncionario);
-        $respuestUsuario = $usuario->insertUsuarios($usuario);
+        $respuestUsuario = $usuario->insertUsuarios($usuario,$linkConexion);
         if($respuestInserFuncionario&&$respuestUsuario){
             mysql_query("COMMIT");
             mysql_query("SET AUTOCOMMIT = 1");
@@ -42,7 +45,6 @@
             <?php
         }
         ?>
-            <script type="text/javascript">alert("Registro Exitoso")</script>
         <?php
     }
 
